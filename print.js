@@ -69,7 +69,7 @@ window.printPassword = (fullNumber, typeName, issueTime) => {
         <body>
             <div class="ticket">
                 <div class="header">
-                    SUA EMPRESA AQUI
+                    CIS - AFYA TERESINA
                 </div>
                 <div class="password-number">
                     ${fullNumber}
@@ -110,3 +110,4 @@ window.printPassword = (fullNumber, typeName, issueTime) => {
         }, 500); 
     };
 };
+
