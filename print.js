@@ -1,29 +1,42 @@
 // print.js
 
-// Função que recebe os dados da senha e dispara a impressão
 window.printPassword = (fullNumber, typeName, issueTime) => {
-    // 1. Cria o conteúdo HTML do recibo
+    // 1. Cria o conteúdo HTML com estilos para impressão
     const printContent = `
         <html>
         <head>
             <title>Senha de Atendimento</title>
             <style>
-                /* Configurações básicas para a bobina de 80mm */
-                @page {
-                    size: 80mm 30cm; /* Largura da bobina (80mm) */
-                    margin: 0;
+                /* Estilos aplicados APENAS durante a impressão */
+                @media print {
+                    /* Configura o tamanho da página para 80mm e margem zero */
+                    @page {
+                        size: 80mm auto; /* Largura 80mm, altura ajusta ao conteúdo */
+                        margin: 0;
+                    }
+                    
+                    /* Limpa margens padrão do corpo */
+                    body {
+                        width: 80mm;
+                        margin: 0;
+                        padding: 0;
+                        font-family: 'Consolas', monospace; /* Fonte para recibo */
+                        color: #000;
+                        /* Garante que o fundo branco seja impresso, se necessário */
+                        -webkit-print-color-adjust: exact;
+                        print-color-adjust: exact;
+                    }
+
+                    /* Força margem zero e remove elementos de rodapé/cabeçalho */
+                    header, footer, nav, aside {
+                        display: none;
+                    }
                 }
-                body {
-                    width: 80mm;
-                    margin: 0;
-                    padding: 0;
-                    font-family: 'Consolas', monospace; /* Fonte que simula recibos */
-                    text-align: center;
-                    color: #000;
-                }
+
+                /* Estilos visuais do recibo */
                 .ticket {
                     padding: 10px 5px;
-                    background-color: #fff;
+                    text-align: center;
                 }
                 .header {
                     font-size: 1.2em;
@@ -31,7 +44,7 @@ window.printPassword = (fullNumber, typeName, issueTime) => {
                     margin-bottom: 10px;
                 }
                 .password-number {
-                    font-size: 3em; /* Destaque grande para a senha */
+                    font-size: 3.5em; /* Destaque máximo */
                     font-weight: bold;
                     display: block;
                     margin: 15px 0;
@@ -75,7 +88,7 @@ window.printPassword = (fullNumber, typeName, issueTime) => {
         </html>
     `;
 
-    // 2. Abre uma nova janela/aba para impressão
+    // 2. Abre uma nova janela/aba
     const printWindow = window.open('', '_blank');
     if (!printWindow) {
         alert('Não foi possível abrir a janela de impressão. Verifique se o bloqueador de pop-ups está ativo.');
@@ -85,11 +98,13 @@ window.printPassword = (fullNumber, typeName, issueTime) => {
     printWindow.document.write(printContent);
     printWindow.document.close();
     
-    // 3. Dispara o comando de impressão e fecha a janela após o comando
+    // 3. Dispara a impressão
     printWindow.onload = function() {
+        // Tenta dar foco à janela de impressão antes de imprimir, para maior compatibilidade
+        printWindow.focus();
         printWindow.print();
         
-        // Timeout para fechar a janela/aba após a impressão ser disparada (pode variar)
+        // Timeout para fechar a janela/aba
         setTimeout(() => {
             printWindow.close();
         }, 500); 
