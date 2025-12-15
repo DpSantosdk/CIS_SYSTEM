@@ -60,6 +60,7 @@ window.generatePassword = (typeKey) => {
         fullNumber: `${type.prefix}${String(nextNumber).padStart(2, '0')}`,
         number: nextNumber,
         type: type,
+        // Garante que o horário da retirada da senha esteja no formato correto para o ticket
         time: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
         timestamp: Date.now()
     };
@@ -67,13 +68,14 @@ window.generatePassword = (typeKey) => {
     queue.push(newPassword);
     saveQueue(queue);
     
-    alert(`Sua senha: ${newPassword.fullNumber}\nTipo: ${newPassword.type.name}\nHora: ${newPassword.time}`);
-    
+    // --- IMPORTANTE: ALERT REMOVIDO PARA NÃO INTERFERIR NA IMPRESSÃO ---
+    // alert(`Sua senha: ${newPassword.fullNumber}\nTipo: ${newPassword.type.name}\nHora: ${newPassword.time}`);
+    // Se desejar feedback, use um modal temporário ou log:
     console.log(`Nova senha gerada: ${newPassword.fullNumber}`);
     
     // ATUALIZAÇÃO PARA IMPRESSÃO: Chama a função que criamos no print.js
-    // Requer que o print.js esteja carregado no index.html
     if (window.printPassword) {
+        // Envia o número, o nome da categoria (em maiúsculas) e a hora
         window.printPassword(newPassword.fullNumber, newPassword.type.name.toUpperCase(), newPassword.time);
     }
     
