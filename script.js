@@ -60,7 +60,6 @@ window.generatePassword = (typeKey) => {
         fullNumber: `${type.prefix}${String(nextNumber).padStart(2, '0')}`,
         number: nextNumber,
         type: type,
-        // Garante que o horário da retirada da senha esteja no formato correto para o ticket
         time: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
         timestamp: Date.now()
     };
@@ -68,16 +67,41 @@ window.generatePassword = (typeKey) => {
     queue.push(newPassword);
     saveQueue(queue);
     
-    // --- IMPORTANTE: ALERT REMOVIDO PARA NÃO INTERFERIR NA IMPRESSÃO ---
-    // alert(`Sua senha: ${newPassword.fullNumber}\nTipo: ${newPassword.type.name}\nHora: ${newPassword.time}`);
-    // Se desejar feedback, use um modal temporário ou log:
     console.log(`Nova senha gerada: ${newPassword.fullNumber}`);
     
-    // ATUALIZAÇÃO PARA IMPRESSÃO: Chama a função que criamos no print.js
-    if (window.printPassword) {
-        // Envia o número, o nome da categoria (em maiúsculas) e a hora
-        window.printPassword(newPassword.fullNumber, newPassword.type.name.toUpperCase(), newPassword.time);
-    }
+    // 🛑 NOVO: LÓGICA DE IMPRESSÃO VIA SERVIDOR LOCAL (fetch API)
+    
+    const ticketData = {
+        fullNumber: newPassword.fullNumber,
+        typeName: newPassword.type.name.toUpperCase(),
+        issueTime: newPassword.time
+    };
+
+    // Tenta enviar os dados para o servidor Node.js que deve estar rodando em http://localhost:3000
+    fetch('http://localhost:3000/print', { 
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(ticketData)
+    })
+    .then(response => {
+        if (!response.ok) {
+            console.error("Erro ao solicitar impressão. Servidor Local retornou erro:", response.status);
+            alert("Erro na Impressão (Rede): O servidor local não conseguiu processar o pedido. Status: " + response.status);
+        } else {
+            console.log("Comando de impressão enviado com sucesso para o Servidor Local.");
+            // Opcional: Mostrar feedback na tela do totem
+            // alert(`Senha ${newPassword.fullNumber} emitida!`); 
+        }
+    })
+    .catch(error => {
+        // Isso acontece se a conexão falhar (Servidor Local está desligado)
+        console.error("Falha na comunicação com o Servidor Local. Ele está rodando?", error);
+        alert("ALERTA: O Sistema de Impressão está OFFLINE. Senha gerada, mas NÃO IMPRESSA.");
+    });
+    
+    // FIM DA NOVA LÓGICA DE IMPRESSÃO
     
     return newPassword;
 };
@@ -227,7 +251,6 @@ window.initCallerPanel = () => {
 
         history.forEach(p => {
             const li = document.createElement('li');
-            // Corrigido para remover a marcação de negrito (**) que só funciona em markdown, e para ser mais legível
             li.innerHTML = `${p.fullNumber} (${p.type.name}) - Guichê ${p.guiche} às ${p.calledTime}`;
             historyList.appendChild(li);
         });
