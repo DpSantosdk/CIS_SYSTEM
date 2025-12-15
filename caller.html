@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chamar Senha</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+    <style>
+        /* Estilos específicos para o painel de chamadas */
+        body { font-family: Arial, sans-serif; padding: 20px; background-color: #f0f4f8; }
+        .caller-panel { display: flex; gap: 20px; max-width: 1200px; margin: 0 auto; }
+        .queue-section, .history-section { flex: 1; padding: 20px; border-radius: 10px; background-color: #fff; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); }
+        .queue-section h2, .history-section h2 { border-bottom: 2px solid #ccc; padding-bottom: 10px; margin-bottom: 15px; color: #333; }
+        
+        /* Controles de Chamada */
+        .call-controls { 
+            display: flex; 
+            gap: 15px; 
+            margin-bottom: 20px; 
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #e9eff5;
+            align-items: center; /* Alinha verticalmente */
+        }
+        
+        /* O campo de input de senha manual foi removido, mantemos apenas os controles de auto */
+        #guiche-input { 
+            padding: 10px; border: 1px solid #ccc; border-radius: 5px; 
+            width: 80px; font-size: 1em; 
+        }
+        
+        /* Botão Automático */
+        #call-button { 
+            background-color: #4CAF50; color: white; padding: 10px 15px; border: none; 
+            border-radius: 5px; cursor: pointer; font-size: 1em; transition: background-color 0.3s; 
+            flex-grow: 1; 
+        }
+        #call-button:hover { background-color: #45a049; }
+
+        /* Estilos da Lista de Fila (Muito Importante) */
+        #queue-list, #history-list { list-style: none; padding: 0; }
+        #queue-list li { 
+            padding: 12px 10px; 
+            border-bottom: 1px dashed #eee; 
+            font-size: 1.1em;
+            cursor: pointer; /* Indica que é clicável */
+            transition: background-color 0.2s;
+        }
+        #queue-list li:hover {
+            background-color: #f5f5f5; /* Efeito visual ao passar o mouse */
+        }
+        .priority-item { 
+            background-color: #fff0f0; 
+            color: #cc0000; 
+            font-weight: bold; 
+        }
+        .priority-item:hover {
+            background-color: #fee; /* Efeito visual ao passar o mouse em prioridade */
+        }
+        
+        #history-list li { padding: 10px; border-bottom: 1px dashed #eee; font-size: 1.1em; }
+        #queue-list li:last-child, #history-list li:last-child { border-bottom: none; }
+        
+        .empty-message { color: #888; text-align: center; padding: 20px; }
+    </style>
+</head>
+<body onload="initCallerPanel()">
+    <h1>Painel do Chamador</h1>
+
+    <div class="call-controls">
+        <label for="guiche-input">Meu Guichê:</label>
+        <input type="number" id="guiche-input" placeholder="Ex: 1" value="1">
+        <button id="call-button">Chamar Próxima Senha (Automático)</button>
+        <p style="margin:0; margin-left:20px; color:#555;">(Clique na senha na lista abaixo para Chamada Manual)</p>
+    </div>
+
+    <div class="caller-panel">
+        <div class="queue-section">
+            <h2>Senhas Aguardando (Fila)</h2>
+            <ul id="queue-list">
+                </ul>
+        </div>
+        
+        <div class="history-section">
+            <h2>Senhas Chamadas Recentemente</h2>
+            <ul id="history-list">
+                 </ul>
+        </div>
+    </div>
+</body>
+</html>

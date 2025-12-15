@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Chamadas</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+    <style>
+        /* Estilos específicos para o painel de exibição */
+        body { 
+            background-color: #ffffff; 
+            color: rgb(255, 255, 255); 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            overflow: hidden; 
+        }
+        #display-container { 
+            display: flex; 
+            height: 100vh; 
+            width: 100vw; 
+        }
+        
+        /* Destaque da Última Chamada */
+        .latest-call { 
+            flex: 2; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            background-color: #ffffff; /* Cor de fundo normal */
+            padding: 40px; 
+            box-shadow: 10px 0 20px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s; 
+        }
+
+        /* Classe de Destaque Adicionada pelo JS */
+        .latest-call.highlight {
+            /* Cor de fundo permanece, mas o box-shadow pisca */
+            background-color: #ffffff; 
+            animation: newCallPulse 0.5s 4 alternate; 
+        }
+
+        @keyframes newCallPulse {
+            from { 
+                box-shadow: 0 0 50px rgba(255, 255, 255, 0.8); /* Efeito de brilho azul/roxo */
+            }
+            to { 
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); 
+            }
+        }
+        
+        .main-info { text-align: center; margin-bottom: 20px; }
+        .password-number { 
+            font-size: 15vw; 
+            font-weight: bold; 
+            color: #ff009d;
+            display: block; 
+            line-height: 1; 
+            text-shadow: 0 0 20px rgba(255, 59, 255, 0.5);
+        }
+        .guiche-number { 
+            font-size: 8vw; 
+            font-weight: 300; 
+            color: #000000; 
+            display: block; 
+            margin-top: 20px;
+        }
+        .category-info { 
+            font-size: 3vw; 
+            color: #3b3b3b; 
+            margin-top: 10px;
+        }
+
+        /* Histórico de Chamadas */
+        .history-list-display {
+            flex: 1; 
+            padding: 30px; 
+            background-color: #424242;
+        }
+        .history-item { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 15px 0; 
+            border-bottom: 1px solid #ffffff;
+        }
+        .history-item:last-child { border-bottom: none; }
+        .history-number { font-size: 2.5em; font-weight: bold; color: #ffffff; width: 30%; }
+        
+        /* NOVO ESTILO PARA A HORA */
+        .history-time { 
+            font-size: 1.2em; 
+            color: #fafafa; 
+            width: 30%; 
+            text-align: center;
+        }
+        
+        .history-guiche { font-size: 1.5em; color: #ffffff; width: 40%; text-align: right; }
+
+        .empty-display { display: flex; justify-content: center; align-items: center; width: 100%; font-size: 3em; color: #555; }
+        
+        /* NOVO ESTILO: Tela de Bloqueio para Ativar o Áudio */
+        #audio-activation {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0, 0, 0, 0.95);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            font-size: 2em;
+            cursor: pointer;
+            text-align: center;
+            padding: 20px;
+        }
+        #audio-activation p {
+            font-size: 0.5em;
+            margin-top: 20px;
+            color: #ccc;
+        }
+        #audio-activation button {
+            padding: 20px 40px;
+            font-size: 1.5em;
+            background-color: #ff69b4; /* Rosa */
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #audio-activation button:hover {
+            background-color: #dc143c; /* Vermelho */
+        }
+    </style>
+</head>
+<body onload="initDisplayPanel()">
+    <audio id="audio-alert" src="alert.mp3" preload="auto"></audio>
+    
+    <div id="display-container">
+    </div>
+
+    <div id="audio-activation">
+        <button onclick="activateAudio()">CLIQUE PARA INICIAR O PAINEL E ATIVAR O SOM</button>
+        <p>Atenção: É necessário este clique inicial para que os alertas sonoros funcionem no navegador.</p>
+    </div>
+</body>
+</html>

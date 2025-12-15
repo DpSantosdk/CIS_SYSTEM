@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retirar Senha</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+    <style>
+        /* Estilos específicos para a tela de retirada */
+        body { background-color: #f7f7f7; font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .password-container { width: 90%; max-width: 800px; text-align: center; }
+        .password-container h1 { color: #333; margin-bottom: 40px; }
+        .password-buttons { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+        .password-button {
+            padding: 30px 15px; border: none; border-radius: 15px;
+            font-size: 1.2em; font-weight: bold; cursor: pointer;
+            transition: background-color 0.3s, transform 0.1s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            color: #fff;
+        }
+        .password-button:hover { transform: translateY(-3px); }
+
+        /* Cores */
+        .medicina { background-color: #ff69b4; } /* Rosa */
+        .fisioterapia { background-color: #4682b4; } /* Azul */
+        .retorno { background-color: #ffa500; } /* Laranja */
+        .normal { background-color: #3cb371; } /* Verde */
+        .prioridade { background-color: #dc143c; } /* Vermelho escuro */
+        .odontologia { background-color: #8a2be2; } /* Violeta */
+    </style>
+</head>
+<body>
+    <div class="password-container">
+        <h1>Selecione o Tipo de Atendimento</h1>
+        <div class="password-buttons">
+            <button class="password-button medicina" onclick="generatePassword('MEDICINA')">
+                Medicina
+            </button>
+            <button class="password-button fisioterapia" onclick="generatePassword('FISIOTERAPIA')">
+                Fisioterapia
+            </button>
+            <button class="password-button retorno" onclick="generatePassword('RETORNO')">
+                Retorno
+            </button>
+            <button class="password-button normal" onclick="generatePassword('NORMAL')">
+                Normal
+            </button>
+            <button class="password-button prioridade" onclick="generatePassword('PRIORIDADE')">
+                Prioridade
+            </button>
+            <button class="password-button odontologia" onclick="generatePassword('ODONTOLOGIA')">
+                Odontologia
+            </button>
+        </div>
+    </div>
+</body>
+</html>
